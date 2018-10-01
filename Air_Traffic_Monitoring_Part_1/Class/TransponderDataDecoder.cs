@@ -11,14 +11,78 @@ namespace Air_Traffic_Monitoring_Part_1.Class
         public TransponderDataDecoder()
         {
             _Aircrafts = new List<AircraftData>();
+            _OldAircraftDatas = new List<AircraftData>();
+        }
+
+        private List<AircraftData> CloneList(List<AircraftData> _list)
+        {
+            List<AircraftData> newList = new List<AircraftData>();
+
+            foreach (var item in _list)
+            {
+                newList.Add(item);
+            }
+            return newList;
         }
 
         public void UpdateTransponderData(List<string> _TransponderData)
         {
+            _OldAircraftDatas = CloneList(_Aircrafts);
+            _Aircrafts.Clear();
+
             foreach (var item in _TransponderData)
             {
                 _Aircrafts.Add(DecodeString(item));
             }
+
+           
+                InsertSpeedAndCourse(_OldAircraftDatas, _Aircrafts);
+            
+            
+        }
+
+        private void InsertSpeedAndCourse(List<AircraftData> oList, List<AircraftData> nList)
+        {
+            int i = 0;
+
+            if (oList.Count() == nList.Count())
+            {
+                foreach (var item in nList)
+                {
+                    item.Speed = Speed(item, oList[i]);
+                    ++i;
+                }
+            }
+            else if (oList.Count() > nList.Count())
+            {
+                for (int j = 0; j < nList.Count(); j++)
+                {
+                    nList[j].Speed = Speed(nList[j], oList[j]);
+                }
+            }
+            else
+            {
+                for (int j = 0; j < oList.Count(); j++)
+                {
+                    nList[j].Speed = Speed(nList[j], oList[j]);
+                }
+            }
+        }
+
+        private int ConvertTimeToMilliseconds(AircraftData obj)
+        {
+            int hour = obj.TimeStamp.hour * 60 * 60 * 1000;
+            int minut = obj.TimeStamp.min * 60 * 1000;
+            int sec = obj.TimeStamp.sec * 1000;
+
+            return hour + minut + sec + obj.TimeStamp.ms;
+        }
+
+        private double Speed(AircraftData newPosition, AircraftData oldPosition)
+        {
+            int timeDiff = Math.Abs(ConvertTimeToMilliseconds(newPosition) - ConvertTimeToMilliseconds(oldPosition));
+
+            return TransponderDataAnalyser.CalcDistance(newPosition, oldPosition)/((double)timeDiff/1000);
         }
 
         public AircraftData DecodeString(string data)
@@ -38,5 +102,6 @@ namespace Air_Traffic_Monitoring_Part_1.Class
         }
 
         public List<AircraftData> _Aircrafts { get; set; }
+        public List<AircraftData> _OldAircraftDatas { get; set; }
     }
 }

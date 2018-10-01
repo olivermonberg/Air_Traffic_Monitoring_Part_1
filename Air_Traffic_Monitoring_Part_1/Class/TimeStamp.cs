@@ -29,7 +29,7 @@ namespace Air_Traffic_Monitoring_Part_1.Class
 
         public override string ToString()
         {
-            return string.Format($"TimeStamp: Date: {day}-{month}-{year}, Time: {hour}:{min}:{sec}:{ms}");
+            return string.Format($"Date: {day}-{month}-{year}\tTime: {hour}:{min}:{sec}:{ms}");
         }
     }
 

@@ -22,10 +22,11 @@ namespace Air_Traffic_Monitoring_Part_1.Class
         public int Y_coordinate { get; set; }
         public int Altitude { get; set; }
         public TimeStamp TimeStamp { get; set; }
-
+        public int CompassCourse { get; set; }
+        public double Speed { get; set; }
         public override string ToString()
         {
-            return string.Format($"Tag: {Tag}, X: {X_coordinate}m, Y: {Y_coordinate}m, Alt: {Altitude}m, {TimeStamp}");
+            return string.Format($"Tag: {Tag}\tX: {X_coordinate}m\tY: {Y_coordinate}m\tAlt: {Altitude}m\tSpeed: {Math.Round(Speed,2)}ms\t{TimeStamp}");
         }
     }
 }

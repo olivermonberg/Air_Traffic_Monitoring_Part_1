@@ -17,20 +17,20 @@ namespace Air_Traffic_Monitoring_Part_1.Class
             Console.ReadKey();
         }
 
+        static TransponderDataDecoder _decoder = new TransponderDataDecoder();
+
         public static void hooker(object o, RawTransponderDataEventArgs args)
         {
             Console.Clear();
             Console.WriteLine("Received transponder data:");
-
-            TransponderDataDecoder decoder = new TransponderDataDecoder();
-
-            decoder.UpdateTransponderData(args.TransponderData);
+            
+            _decoder.UpdateTransponderData(args.TransponderData);
 
             TransponderDataAnalyser analyser = new TransponderDataAnalyser();
 
-            analyser.AnalyseData(decoder._Aircrafts);
+            analyser.AnalyseData(_decoder._Aircrafts);
 
-            foreach (var item in decoder._Aircrafts)
+            foreach (var item in analyser._FilteredAircrafts)
             {
                 Console.WriteLine(item.ToString());
             }

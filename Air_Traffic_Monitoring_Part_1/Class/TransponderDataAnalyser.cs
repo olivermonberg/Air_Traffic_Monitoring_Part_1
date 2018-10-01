@@ -10,54 +10,37 @@ namespace Air_Traffic_Monitoring_Part_1.Class
     {
         public TransponderDataAnalyser()
         {
-            //FilteredAircrafts = new List<AircraftData>();
+            _FilteredAircrafts = new List<AircraftData>();
         }
         public void AnalyseData(List<AircraftData> _aircrafts)
         {
-            List<AircraftData> _FilterAircrafts = FilterAircrafts(_aircrafts);
+            FilterAircrafts(_aircrafts);
 
-            /*
-            foreach (var item1 in _FilterAircrafts)
+            for (int i = 0; i < _FilteredAircrafts.Count(); i++)
             {
-                foreach (var item2 in _FilterAircrafts)
+                for (int j = i + 1; j < _FilteredAircrafts.Count(); j++)
                 {
-                    if (CheckForCollision(item1, item2) == true)
+                    if (CheckForCollision(_FilteredAircrafts[i], _FilteredAircrafts[j]) == true)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"WARNING! Collision between flight {item1.Tag} and {item2.Tag}.");
-                        Console.ResetColor();
-                    }
-                }
-            }*/
-
-            for (int i = 0; i < _FilterAircrafts.Count(); i++)
-            {
-                for (int j = i + 1; j < _FilterAircrafts.Count(); j++)
-                {
-                    if (CheckForCollision(_FilterAircrafts[i], _FilterAircrafts[j]) == true)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"WARNING! Collision between flight {_FilterAircrafts[i].Tag} " +
-                                          $"and {_FilterAircrafts[j].Tag}.");
+                        Console.WriteLine($"WARNING! Collision between flight {_FilteredAircrafts[i].Tag} " +
+                                          $"and {_FilteredAircrafts[j].Tag}.");
                         Console.ResetColor();
                     }
                 }   
             }
-
         }
 
         private bool CheckForCollision(AircraftData obj1, AircraftData obj2)
         {
-            /*
-            if (obj1 == obj2)
+            /*if (obj1 == obj2)
             {
                 return false;
             }*/
 
             int AltDiff = Math.Abs(obj1.Altitude - obj2.Altitude);
-            int Dist = (int)Math.Sqrt(Math.Pow((obj2.X_coordinate - obj1.X_coordinate),2) + 
-                                      Math.Pow((obj2.Y_coordinate-obj1.Y_coordinate),2));
-
+            int Dist = CalcDistance(obj1, obj2);
+                                      
             if (AltDiff <= 300 && Dist <= 5000)
             {
                 return true;
@@ -65,8 +48,22 @@ namespace Air_Traffic_Monitoring_Part_1.Class
 
             return false;
         }
+        /*
+        void printVelocityAndCourse()
+        {
+            foreach (var item in _FilteredAircrafts)
+            {
+                Console.WriteLine($"Tag: {}");
+            }
+        }*/
 
-        private List<AircraftData> FilterAircrafts(List<AircraftData> _list)
+        public static int CalcDistance(AircraftData obj1, AircraftData obj2)
+        {
+            return (int)Math.Sqrt(Math.Pow((obj2.X_coordinate - obj1.X_coordinate), 2) +
+                                  Math.Pow((obj2.Y_coordinate - obj1.Y_coordinate), 2));
+        }
+
+        private void FilterAircrafts(List<AircraftData> _list)
         {
             List<AircraftData> FilteredAircrafts = new List<AircraftData>();
 
@@ -76,11 +73,12 @@ namespace Air_Traffic_Monitoring_Part_1.Class
                     (item.X_coordinate >= 10000 && item.X_coordinate <= 90000) &&
                     (item.Y_coordinate <= 90000 && item.Y_coordinate >= 10000))
                 {
-                    FilteredAircrafts.Add(item);
+                    _FilteredAircrafts.Add(item);
                 }
             }
-
-            return FilteredAircrafts;
+            //return FilteredAircrafts;
         }
+
+        public List<AircraftData> _FilteredAircrafts;
     }
 }
