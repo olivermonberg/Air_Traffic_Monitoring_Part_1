@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TransponderReceiver;
 
-namespace Air_Traffic_Monitoring_Part_1
+namespace Air_Traffic_Monitoring_Part_1.Class
 {
     class Program
     {
@@ -21,7 +21,16 @@ namespace Air_Traffic_Monitoring_Part_1
         {
             Console.Clear();
             Console.WriteLine("Received transponder data:");
-            foreach (var item in args.TransponderData)
+
+            TransponderDataDecoder decoder = new TransponderDataDecoder();
+
+            decoder.UpdateTransponderData(args.TransponderData);
+
+            TransponderDataAnalyser analyser = new TransponderDataAnalyser();
+
+            analyser.AnalyseData(decoder._Aircrafts);
+
+            foreach (var item in decoder._Aircrafts)
             {
                 Console.WriteLine(item.ToString());
             }

@@ -46,8 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Class\AircraftData.cs" />
+    <Compile Include="Class\Program.cs" />
+    <Compile Include="Class\TransponderDataAnalyser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Class\TimeStamp.cs" />
+    <Compile Include="Class\TransponderDataDecoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
