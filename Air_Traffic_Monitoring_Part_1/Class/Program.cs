@@ -12,14 +12,14 @@ namespace Air_Traffic_Monitoring_Part_1.Class
         static void Main(string[] args)
         {
             var receiver = TransponderReceiverFactory.CreateTransponderDataReceiver();
-            receiver.TransponderDataReady += hooker;
+            receiver.TransponderDataReady += eventHandler;
 
             Console.ReadKey();
         }
 
         static TransponderDataDecoder _decoder = new TransponderDataDecoder();
 
-        public static void hooker(object o, RawTransponderDataEventArgs args)
+        public static void eventHandler(object o, RawTransponderDataEventArgs args)
         {
             Console.Clear();
             Console.WriteLine("Received transponder data:");

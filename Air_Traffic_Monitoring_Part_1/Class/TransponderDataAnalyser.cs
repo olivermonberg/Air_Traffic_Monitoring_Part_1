@@ -23,7 +23,7 @@ namespace Air_Traffic_Monitoring_Part_1.Class
                     if (CheckForCollision(_FilteredAircrafts[i], _FilteredAircrafts[j]) == true)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"WARNING! Collision between flight {_FilteredAircrafts[i].Tag} " +
+                        Console.WriteLine($"WARNING! Possible collision between flight {_FilteredAircrafts[i].Tag} " +
                                           $"and {_FilteredAircrafts[j].Tag}.");
                         Console.ResetColor();
                     }
@@ -39,7 +39,7 @@ namespace Air_Traffic_Monitoring_Part_1.Class
             }*/
 
             int AltDiff = Math.Abs(obj1.Altitude - obj2.Altitude);
-            int Dist = CalcDistance(obj1, obj2);
+            int Dist = Utility.CalcDistance(obj1, obj2);
                                       
             if (AltDiff <= 300 && Dist <= 5000)
             {
@@ -57,11 +57,7 @@ namespace Air_Traffic_Monitoring_Part_1.Class
             }
         }*/
 
-        public static int CalcDistance(AircraftData obj1, AircraftData obj2)
-        {
-            return (int)Math.Sqrt(Math.Pow((obj2.X_coordinate - obj1.X_coordinate), 2) +
-                                  Math.Pow((obj2.Y_coordinate - obj1.Y_coordinate), 2));
-        }
+        
 
         private void FilterAircrafts(List<AircraftData> _list)
         {

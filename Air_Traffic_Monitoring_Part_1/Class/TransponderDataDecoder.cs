@@ -34,55 +34,8 @@ namespace Air_Traffic_Monitoring_Part_1.Class
             {
                 _Aircrafts.Add(DecodeString(item));
             }
-
-           
-                InsertSpeedAndCourse(_OldAircraftDatas, _Aircrafts);
             
-            
-        }
-
-        private void InsertSpeedAndCourse(List<AircraftData> oList, List<AircraftData> nList)
-        {
-            int i = 0;
-
-            if (oList.Count() == nList.Count())
-            {
-                foreach (var item in nList)
-                {
-                    item.Speed = Speed(item, oList[i]);
-                    ++i;
-                }
-            }
-            else if (oList.Count() > nList.Count())
-            {
-                for (int j = 0; j < nList.Count(); j++)
-                {
-                    nList[j].Speed = Speed(nList[j], oList[j]);
-                }
-            }
-            else
-            {
-                for (int j = 0; j < oList.Count(); j++)
-                {
-                    nList[j].Speed = Speed(nList[j], oList[j]);
-                }
-            }
-        }
-
-        private int ConvertTimeToMilliseconds(AircraftData obj)
-        {
-            int hour = obj.TimeStamp.hour * 60 * 60 * 1000;
-            int minut = obj.TimeStamp.min * 60 * 1000;
-            int sec = obj.TimeStamp.sec * 1000;
-
-            return hour + minut + sec + obj.TimeStamp.ms;
-        }
-
-        private double Speed(AircraftData newPosition, AircraftData oldPosition)
-        {
-            int timeDiff = Math.Abs(ConvertTimeToMilliseconds(newPosition) - ConvertTimeToMilliseconds(oldPosition));
-
-            return TransponderDataAnalyser.CalcDistance(newPosition, oldPosition)/((double)timeDiff/1000);
+            InsertSpeed(_OldAircraftDatas, _Aircrafts);
         }
 
         public AircraftData DecodeString(string data)
@@ -100,6 +53,38 @@ namespace Air_Traffic_Monitoring_Part_1.Class
             return new AircraftData(strArray[0], int.Parse(strArray[1]), int.Parse(strArray[2]), int.Parse(strArray[3]),
                 new TimeStamp(year, month, day, hour, min, sec, ms));
         }
+
+        private void InsertSpeed(List<AircraftData> oList, List<AircraftData> nList)
+        {
+            int i = 0;
+
+            if (oList.Count() == nList.Count())
+            {
+                foreach (var item in nList)
+                {
+                    item.Speed = Utility.Speed(item, oList[i]);
+                    ++i;
+                }
+            }
+            else if (oList.Count() > nList.Count())
+            {
+                for (int j = 0; j < nList.Count(); j++)
+                {
+                    nList[j].Speed = Utility.Speed(nList[j], oList[j]);
+                }
+            }
+            else
+            {
+                for (int j = 0; j < oList.Count(); j++)
+                {
+                    nList[j].Speed = Utility.Speed(nList[j], oList[j]);
+                }
+            }
+        }
+
+        
+
+        
 
         public List<AircraftData> _Aircrafts { get; set; }
         public List<AircraftData> _OldAircraftDatas { get; set; }
